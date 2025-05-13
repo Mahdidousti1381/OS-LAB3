@@ -392,16 +392,12 @@ void scheduler(void)
     // ---------- Class 1: EDF ----------
     if (count_edf > 0)
     {
-      // cprintf("count edf is + \n");
       for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
       {
         if (p->state == RUNNABLE && p->sched_class == 1)
         {
           if (chosen == 0 || p->deadline < chosen->deadline)
-          {
             chosen = p;
-          }
-          //cprintf("EDF found: %s //", chosen->name);
         }
       }
     }
@@ -453,14 +449,9 @@ void scheduler(void)
         {
           if (p->state == RUNNABLE && p->sched_class == 2 && p->sched_level == 2)
           {
-            // Update waited_ticks and apply aging
             p->waited_ticks++;
-
             if (chosen == 0 || p->arrival_time < chosen->arrival_time)
-            {
               chosen = p;
-            }
-            // cprintf("FCFS found: %s //",chosen->name);
           }
         }
       }
@@ -747,18 +738,6 @@ void procdump(void)
 }
 //////////////////////////////////my process
 
-int set_process_deadline(int deadline)
-{
-  if (deadline <= 0)
-    return -1;
-
-  struct proc *curproc = myproc();
-  curproc->sched_class = 1; // EDF
-  curproc->sched_level = 0; // Unused for EDF
-  curproc->deadline = deadline;
-
-  return 0;
-}
 
 int set_deadline_for_process(int pid, int deadline)
 {
@@ -861,48 +840,12 @@ int update_wait_time(int osTicks)
           p->arrival_time = osTicks;
         }
       }
-    }//else if(p->state == RUNNING){
-
-    // }
+    }
   }
   release(&ptable.lock);
   return 0;
 }
 
-// int
-// print_sched_info(void)
-// {
-//   struct proc *p;
-
-//   acquire(&ptable.lock);
-//   cprintf("PID\tCLASS\tLEVEL\tSTATE\t\tDEADLINE\tARRIVAL\tWAITED\n");
-//   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
-//     if (p->state == UNUSED)
-//       continue;
-
-//     char *state;
-//     switch (p->state) {
-//       case SLEEPING:  state = "SLEEPING"; break;
-//       case RUNNABLE:  state = "RUNNABLE"; break;
-//       case RUNNING:   state = "RUNNING";  break;
-//       case ZOMBIE:    state = "ZOMBIE";   break;
-//       case EMBRYO:    state = "EMBRYO";   break;
-//       default:        state = "UNKNOWN";  break;
-//     }
-
-//     cprintf("%d\t%d\t%d\t%s\t%d\t\t%d\t%d\n",
-//       p->pid,
-//       p->sched_class,
-//       p->sched_level,
-//       state,
-//       p->deadline,
-//       p->arrival_time,
-//       p->waited_ticks
-//     );
-//   }
-//   release(&ptable.lock);
-//   return 0;
-// }
 int is_higher_waiting(void)
 {
   if (count_edf > 0 || count_rr > 0)
@@ -912,28 +855,6 @@ int is_higher_waiting(void)
   }
   return 0;
 }
-
-// void ageprocs(int osTicks)
-// {
-//   struct proc *p;
-
-//   acquire(&ptable.lock);
-
-//   for (p = ptable.proc; p < &ptable.proc[NPROC]; p++)
-//   {
-//     if (p->state == RUNNABLE && p->sched_class == 2 && p->sched_level == 2)
-//     {
-//       if (osTicks - p->waited_ticks >= AGING_THRESHOLD)
-//       {
-//         release(&ptable.lock);
-//         change_sched_level(p->pid, 1);
-//         acquire(&ptable.lock);
-//       }
-//     }
-//   }
-
-//   release(&ptable.lock);
-// }
 
 int print_sched_info(void)
 {

@@ -62,7 +62,6 @@ struct proc {
   int max_consecutive_run;
   int last_run;
 };
-int set_process_deadline(int deadline);
 int change_sched_level(int pid, int target_class);
 int print_sched_info(void);
 int update_wait_time(int osTicks);

@@ -53,11 +53,10 @@ void trap(struct trapframe *tf)
       ticks++;
       osTicks = ticks;
       wakeup(&ticks);
-      // cprintf("TICK: %d\n", ticks);
       release(&tickslock);
       update_wait_time(osTicks); // Accumulate waited_ticks for all RUNNABLE processes
     }
-    // cprintf("\n current proc: %s" , myproc()->name);
+    // cprintf("\n current proc: %s" , myproc()->pid);
     lapiceoi();
     break;
   case T_IRQ0 + IRQ_IDE:
@@ -110,7 +109,6 @@ void trap(struct trapframe *tf)
 
   if (myproc() && myproc()->state == RUNNING && tf->trapno == T_IRQ0 + IRQ_TIMER)
   {
-    // struct proc* currproc = myproc();
     // myproc()->consecutive_run = osTicks - myproc()->last_run;
     myproc()->consecutive_run++;
     myproc()->runnig_time++;
@@ -121,8 +119,6 @@ void trap(struct trapframe *tf)
     {
       // myproc()->rr_ticks = osTicks -  myproc()->last_run ;
       myproc()->rr_ticks++;
-      //cprintf("RR proc %d running, RR ticks: %d \n", myproc()->pid, myproc()->rr_ticks);
-
       if (myproc()->rr_ticks >= Time_Quantum / Unit_Quantum_length_ms)
       {
         cprintf("RR proc %d  yielded, RR ticks: %d \n", myproc()->pid, myproc()->rr_ticks);
@@ -133,7 +129,6 @@ void trap(struct trapframe *tf)
     {
       if (is_higher_waiting())
       {
-        // cprintf("higher came \n");
         yield();
       }
     }

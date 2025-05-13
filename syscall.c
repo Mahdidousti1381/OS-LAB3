@@ -103,7 +103,6 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
-extern int sys_set_process_deadline(void);
 extern int sys_change_sched_level(void);
 extern int sys_print_sched_info(void);
 extern int sys_update_wait_time(void);
@@ -132,7 +131,6 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
-[SYS_set_process_deadline] sys_set_process_deadline,
 [SYS_change_sched_level] sys_change_sched_level,
 [SYS_print_sched_info] sys_print_sched_info,
 [SYS_update_wait_time] sys_update_wait_time,

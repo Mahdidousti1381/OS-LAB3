@@ -33,7 +33,6 @@ void busywork(int ticks, int n)
 int main(void)
 {
     int pid;
-    // n = 39;
 
     for (int i = 0; i < NPROC; i++)
     {
@@ -45,12 +44,9 @@ int main(void)
         }
         if (pid == 0)
         {
-            // if(getpid() % 3 == 0 )
-            //     set_process_deadline(30+i);
             printf(1, "scheduletest: starting process %d\n", getpid());
             busywork(5, getpid());
             print_sched_info(); // Custom syscall
-            // printf(1, "fibonacci(%d) = %d\n", n, fibonacci(n));
             exit();
         }
 

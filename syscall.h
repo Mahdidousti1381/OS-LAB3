@@ -20,7 +20,6 @@
 #define SYS_link   19
 #define SYS_mkdir  20
 #define SYS_close  21
-#define SYS_set_process_deadline 22  // pick next unused syscall number
 #define SYS_change_sched_level 23
 #define SYS_print_sched_info 25
 #define SYS_update_wait_time 26

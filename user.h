@@ -23,7 +23,6 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
-int set_process_deadline(int deadline);
 int change_sched_level(int pid, int target_level);
 int print_sched_info(void);
 int is_higher_waiting(void);

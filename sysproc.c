@@ -89,21 +89,11 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-extern int set_process_deadline(int deadline);
 extern int change_sched_level(int pid, int target_class);
 extern int print_sched_info(void);
 extern int update_wait_time(int osTicks);
 extern int is_higher_waiting(void);
 extern int set_deadline_for_process(int pid, int deadline);
-
-int
-sys_set_process_deadline(void)
-{
-  int deadline;
-  if (argint(0, &deadline) < 0)
-    return -1;
-  return set_process_deadline(deadline);
-}
 
 int
 sys_set_deadline_for_process(void)
